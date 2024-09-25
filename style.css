@@ -7,3 +7,9 @@ h1,p{
 h4{
     color : orange;
 }
+a:link {
+    color : white;
+}
+a:visited{
+    color: gray;
+}
