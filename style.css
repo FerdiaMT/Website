@@ -1,8 +1,11 @@
 body{
     background-color:rgb(50, 43, 68);
+    margin:auto;
+    text-align: center;
 }
 h1,p{
     color : white;
+    
 }
 h4{
     color : orange;
@@ -12,4 +15,6 @@ a:link {
 }
 a:visited{
     color: gray;
+}
+.site{
 }
