@@ -6,7 +6,7 @@ let mapX = 8, mapY = 8, mapS = 64;
 const HALFPI = Math.PI / 2;
 const THREEPI = (3 * Math.PI) / 2;
 const DEGREE = 0.0174533; // roughly the radian amount of a degree
-let fov = 60;
+let fov = 80;
 let disT = 0;
 const inputKey = new Array();
 const HEIGHT  = 600;
@@ -14,7 +14,7 @@ const HEIGHT  = 600;
 function setup() {
   px = py = 280;
   pa=0;
-  createCanvas(1024, 512);
+  createCanvas(fov*8, 512);
   background(100);
   pdx = Math.cos(pa) * 5;
   pdy = Math.sin(pa) * 5;
@@ -33,42 +33,14 @@ let mapW = [
 ];
 
 function draw() {
-  
-  
-
-  
   keyMovement();
-  
   background(100);
-  drawMap2D();
-  rect(px - pWidth / 2, py - pWidth / 2, pWidth, pWidth); // draws player
-  stroke(255, 0, 0);
-  let rayX = px + (pdx * 5);
-  let rayY =  py + (pdy * 5);
-  line( px, py, rayX+px, rayY );
   drawRays2D();
 }
 
 function distance(ax, ay, bx, by, ang) {
   return sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay));
 }
-
-function drawMap2D() {
-  let x, y, xo, yo;
-  for (y = 0; y < mapY; y++) {
-    for (x = 0; x < mapX; x++) {
-      if (mapW[y * mapX + x] >0) {
-        fill(255);
-      } else {
-        fill(0);
-      }
-      stroke(0);
-      strokeWeight(0);
-      rect(x * mapS, y * mapS, mapS, mapS);
-    }
-  }
-}
-
 function drawRays2D() {
   let r, mx, my, mp, dof;
   let rx, ry, ra, xo, yo;
@@ -125,7 +97,6 @@ function drawRays2D() {
     }
 
     stroke(0, 0, 255);
-
     // Check vertical lines
     dof = 0;
     let disV = 1000000, vx = px, vy = py;
@@ -176,11 +147,10 @@ function drawRays2D() {
       rx = hx;
       ry = hy;
       disT = disH;
-      shade = 1;
+      
     }
-
-    stroke(0, 255, 0);
-    line(px, py, rx, ry);
+    //stroke(0, 255, 0);
+    //line(px, py, rx, ry);
 
     let ca = pa - ra;
     disT=disT*Math.cos((ca))
@@ -190,11 +160,7 @@ function drawRays2D() {
     if (ca > 2 * Math.PI) {
       ca -= 2 * Math.PI;
     }
-    //disT = disT * Math.cos(ca);
-    
-    
-    
-    
+
     let lineH = (mapS * HEIGHT) / disT;
     let ty_step= (32 / lineH);
     let ty_off = 0;
@@ -207,7 +173,6 @@ function drawRays2D() {
 
     strokeWeight(8);
     strokeCap(SQUARE);
-    //stroke(0, 255 - disT / 2, 0);
     
     let ty = ty_off*ty_step+(hmt*32);
     
@@ -223,14 +188,7 @@ function drawRays2D() {
         tx = 31-tx;
       }
     }
-    
-    //ty+=32;
-    
-    
-    
     for(let y=0;y<lineH;y++){
-      //line(r * 8 + 530, lineO, r * 8 + 530, lineH + lineO);
-      
       let c = All_Textures[(int)(ty)*32 + tx]*shade;
       
       if(hmt === 0 )stroke(0,0,c*100); //checkboard test
@@ -239,30 +197,12 @@ function drawRays2D() {
       if(hmt === 3 )stroke(c*200,c*200,c*250,); // door
       if(hmt === 4 )stroke(c*250,0,0);
       
-      line(r * 8 + 530, lineO+y, r * 8 + 530, lineO+y+1);
+      line(r * 8, lineO+y, r * 8, lineO+y+1);
       ty+=ty_step;
     
     }
     stroke(50)
-    line(r * 8 + 530, lineO+lineH, r * 8 + 530, lineO+lineH+HEIGHT);
-    
-    // draw the floor
-  // for(y=lineO+lineH ; y<HEIGHT; y++){
-  //   let dy = y-(HEIGHT/2);
-  //   tx = px/2 + cos(ra)*159;
-  //   ty = px/2 + cos(ra)*159;
-  //   let c = All_Textures[Math.floor(ty*32&31)*32+ Math.floor(tx)&31]*0.7;
-  //   stroke(c*255);
-  //   line(r * 8 + 530, y, r * 8 + 530, y+1);
-  // }
-    //this causes too much lag to the point a powerful pc can barely run it
-    // it also doesnt work yet
-    
-    
-    
-    //stroke(110);
-    //line(r * 8 + 530, lineH + lineO, r * 8 + 530, 512);
-
+    line(r * 8, lineO+lineH, r * 8, lineO+lineH+HEIGHT);
     ra += DEGREE;
     if (ra < 0) {
       ra += 2 * Math.PI;
@@ -289,12 +229,8 @@ function drawRays2D() {
           if (key == 'e'){
             inputKey[4] = 1;
           }
-         
-
       }
-      
       function keyReleased(){
-        
           if (key === 'w'){
             inputKey[0] = 0;
           }
@@ -311,7 +247,6 @@ function drawRays2D() {
             inputKey[4] = 0;
           }    
       }
-
   function keyMovement(){
     let xo = 0; 
     if(pdx<0){
@@ -336,11 +271,6 @@ function drawRays2D() {
     if (inputKey[0]) {
       if(mapW[(ipy*mapX + ipx_add_xo)]===0){px+=pdx;}
       if(mapW[(ipy_add_yo* mapX + ipx)]===0){py+=pdy;}
-      
-      // px += pdx;
-      // py += pdy;
-      // print(ipx + " " +ipy + " "+ mapW[Math.ceil(ipy*mapX + ipx_add_xo)])
-      
     } else if (inputKey[1]) {
        if(mapW[(ipy*mapX + ipx_sub_xo)]===0){px-=pdx;}
        if(mapW[(ipy_sub_yo* mapX + ipx)]===0){py-=pdy;}
