@@ -38,3 +38,8 @@ a:visited{
 .navbar li{
     float : left;
 }
+
+canvas {
+    display: block;
+}
+  
