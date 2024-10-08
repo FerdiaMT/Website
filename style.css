@@ -39,7 +39,14 @@ a:visited{
     float : left;
 }
 
+.jscanvas{
+    display: flex;
+    align-items: center;
+}
+
 canvas {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-items: center;
 }
   
