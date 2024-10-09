@@ -12,8 +12,11 @@ const inputKey = new Array();
 const HEIGHT  = 600;
 
 function setup() {
-  canvas = createCanvas(fov*8, 512);
-  canvas.position()
+  canvas = createCanvas(640, 512);
+  let winX = window.innerWidth; // example 1920 , our width is 640
+  //so we want to start 320 pixels before the middle
+  canvas.position((winX/2)-320);
+  
   px = py = 280;
   pa=0;
   background(100);
