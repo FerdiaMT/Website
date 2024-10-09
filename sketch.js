@@ -2,7 +2,7 @@ let px, py, pa, pdx, pdy; // for 158 use height / 320
 var canvas;
 let pWidth = 20;
 let speed = 5;
-let mapX = 8, mapY = 8, mapS = 64;
+
 const HALFPI = Math.PI / 2;
 const THREEPI = (3 * Math.PI) / 2;
 const DEGREE = 0.0174533; // roughly the radian amount of a degree
@@ -12,10 +12,8 @@ const inputKey = new Array();
 const HEIGHT  = 600;
 
 function setup() {
-  canvas = createCanvas(640, 512);
-  let winX = window.innerWidth; // example 1920 , our width is 640
-  //so we want to start 320 pixels before the middle
-  canvas.position((winX/2)-320);
+  canvas = createCanvas(fov*8, 512);
+  canvas.position()
   px = py = 280;
   pa=0;
   background(100);
@@ -24,54 +22,38 @@ function setup() {
 }
 
 // Declare and initialize mapW before using it
+let mapX = 16, mapY = 16, mapS = 48;
 let mapW = [
-  2, 2, 3, 4, 3, 2, 2, 2,
-  2, 0, 2, 0, 0, 0, 0, 2,
-  2, 0, 2, 0, 0, 0, 0, 2,
-  2, 0, 2, 1, 0, 0, 0, 2,
-  2, 0, 0, 4, 0, 0, 0, 2,
-  2, 0, 0, 2, 0, 1, 0, 2,
-  2, 0, 0, 2, 0, 0, 0, 2,
-  2, 2, 2, 2, 2, 2, 2, 2,
+  2, 2, 3, 3, 3, 2, 2, 2, 2, 2 ,2 ,2 ,2 ,2 ,2 ,2,
+  2, 0, 2, 0, 0, 0, 0, 2, 0, 0 ,0 ,0 ,0 ,0 ,0 ,2,
+  2, 0, 2, 0, 0, 0, 0, 2, 0, 0 ,2 ,0 ,0 ,2 ,2 ,2,
+  2, 0, 2, 2, 0, 0, 0, 4, 0, 0 ,0 ,0 ,0 ,0 ,0 ,2,
+  2, 0, 0, 4, 0, 0, 0, 2, 0, 0 ,2 ,0 ,0 ,0 ,0 ,2,
+  2, 0, 0, 2, 0, 2, 0, 2, 0, 0 ,0 ,0 ,0 ,2 ,0 ,2,
+  2, 0, 0, 2, 0, 0, 0, 2, 0, 0 ,0 ,0 ,2 ,0 ,0 ,2,
+  2, 2, 2, 2, 2, 4, 2, 2, 0, 0 ,0 ,0 ,0 ,0 ,0 ,2,
+  
+  2, 2, 3, 4, 3, 0, 2, 2, 2, 2 ,2 ,2 ,4 ,2 ,2 ,2,
+  2, 0, 2, 0, 0, 0, 0, 2, 0, 0 ,0 ,0 ,0 ,2 ,0 ,2,
+  2, 0, 2, 0, 0, 0, 0, 2, 0, 0 ,0 ,0 ,0 ,2 ,0 ,2,
+  2, 0, 2, 1, 0, 0, 0, 0, 0, 0 ,0 ,0 ,0 ,2 ,0 ,2,
+  2, 0, 0, 4, 0, 0, 0, 2, 2, 2 ,2 ,2 ,3 ,3 ,0 ,2,
+  2, 0, 0, 2, 0, 1, 0, 2, 0, 0 ,0 ,0 ,0 ,0 ,0 ,2,
+  2, 0, 0, 2, 0, 0, 0, 2, 0, 0 ,0 ,0 ,0 ,0 ,0 ,2,
+  2, 2, 2, 2, 2, 2, 2, 2, 0, 0 ,0 ,0 ,0 ,0 ,0 ,2,
+  
 ];
-
 function draw() {
   keyMovement();
   background(100);
   drawRays2D();
-  //drawMap2D();
-  //rect(px - pWidth / 2, py - pWidth / 2, pWidth, pWidth); // draws player
-  // stroke(255, 0, 0);
-  // let rayX = px + (pdx * 5);
-  // let rayY =  py + (pdy * 5);
-  // line( px, py, rayX+px, rayY );
-  
 }
-
 function distance(ax, ay, bx, by, ang) {
   return sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay));
 }
-
-function drawMap2D() {
-  let x, y, xo, yo;
-  for (y = 0; y < mapY; y++) {
-    for (x = 0; x < mapX; x++) {
-      if (mapW[y * mapX + x] >0) {
-        fill(255);
-      } else {
-        fill(0);
-      }
-      stroke(0);
-      strokeWeight(0);
-      rect(x * mapS, y * mapS, mapS, mapS);
-    }
-  }
-}
-
 function drawRays2D() {
   let r, mx, my, mp, dof;
   let rx, ry, ra, xo, yo;
-  rx = ry = ra = xo = yo = 0.0;
 
   ra = pa - DEGREE * fov / 2;
   if (ra < 0) {
@@ -122,9 +104,6 @@ function drawRays2D() {
         dof += 1;
       }
     }
-
-    stroke(0, 0, 255);
-
     // Check vertical lines
     dof = 0;
     let disV = 1000000, vx = px, vy = py;
@@ -178,8 +157,7 @@ function drawRays2D() {
       
     }
 
-    //stroke(0, 255, 0);
-    //line(px, py, rx, ry);
+
 
     let ca = pa - ra;
     disT=disT*Math.cos((ca))
@@ -189,11 +167,7 @@ function drawRays2D() {
     if (ca > 2 * Math.PI) {
       ca -= 2 * Math.PI;
     }
-    //disT = disT * Math.cos(ca);
-    
-    
-    
-    
+
     let lineH = (mapS * HEIGHT) / disT;
     let ty_step= (32 / lineH);
     let ty_off = 0;
@@ -206,10 +180,8 @@ function drawRays2D() {
 
     strokeWeight(8);
     strokeCap(SQUARE);
-    //stroke(0, 255 - disT / 2, 0);
     
     let ty = ty_off*ty_step+(hmt*32);
-    
     let tx = 0 ;
     if(shade ===1){
       tx = Math.floor((rx/2)%32);
@@ -223,17 +195,13 @@ function drawRays2D() {
       }
     }
     
-    //ty+=32;
-    
-    
-    
     for(let y=0;y<lineH;y++){
       //line(r * 8 + 530, lineO, r * 8 + 530, lineH + lineO);
       
       let c = All_Textures[(int)(ty)*32 + tx]*shade;
       
       if(hmt === 0 )stroke(0,0,c*100); //checkboard test
-      if(hmt === 1 )stroke(c*220,c*70,0); // brick
+      if(hmt === 1 )stroke(c*230,c*90,30 + c*60); // brick
       if(hmt === 2 )stroke(c*250,c*250,250); // window
       if(hmt === 3 )stroke(c*200,c*200,c*250,); // door
       if(hmt === 4 )stroke(c*250,0,0);
@@ -244,24 +212,6 @@ function drawRays2D() {
     }
     stroke(50)
     line(r * 8, lineO+lineH, r * 8, lineO+lineH+HEIGHT);
-    
-    // draw the floor
-  // for(y=lineO+lineH ; y<HEIGHT; y++){
-  //   let dy = y-(HEIGHT/2);
-  //   tx = px/2 + cos(ra)*159;
-  //   ty = px/2 + cos(ra)*159;
-  //   let c = All_Textures[Math.floor(ty*32&31)*32+ Math.floor(tx)&31]*0.7;
-  //   stroke(c*255);
-  //   line(r * 8 + 530, y, r * 8 + 530, y+1);
-  // }
-    //this causes too much lag to the point a powerful pc can barely run it
-    // it also doesnt work yet
-    
-    
-    
-    //stroke(110);
-    //line(r * 8 + 530, lineH + lineO, r * 8 + 530, 512);
-
     ra += DEGREE;
     if (ra < 0) {
       ra += 2 * Math.PI;
@@ -288,10 +238,7 @@ function drawRays2D() {
           if (key == 'e'){
             inputKey[4] = 1;
           }
-         
-
       }
-      
       function keyReleased(){
         
           if (key === 'w'){
@@ -332,19 +279,15 @@ function drawRays2D() {
     let ipy_sub_yo = Math.floor((py-yo)/64.00);
     
     // w s a d
-    if (inputKey[0]) {
+    if (inputKey[0]) { // W
       if(mapW[(ipy*mapX + ipx_add_xo)]===0){px+=pdx;}
       if(mapW[(ipy_add_yo* mapX + ipx)]===0){py+=pdy;}
-      
-      // px += pdx;
-      // py += pdy;
-      // print(ipx + " " +ipy + " "+ mapW[Math.ceil(ipy*mapX + ipx_add_xo)])
-      
-    } else if (inputKey[1]) {
+       
+    } else if (inputKey[1]) { //S
        if(mapW[(ipy*mapX + ipx_sub_xo)]===0){px-=pdx;}
        if(mapW[(ipy_sub_yo* mapX + ipx)]===0){py-=pdy;}
     }
-    if (inputKey[2]) {
+    if (inputKey[2]) { //A
       pa -= 0.1;
       if (pa < 0) {
         pa += 2 * Math.PI;
@@ -352,7 +295,7 @@ function drawRays2D() {
       pdx = Math.cos(pa) * 5;
       pdy = Math.sin(pa) * 5;
     }
-    if (inputKey[3]) {
+    if (inputKey[3]) { //D
       pa += 0.1;
       if (pa > 2 * Math.PI) {
         pa -= 2 * Math.PI;
@@ -360,23 +303,7 @@ function drawRays2D() {
       pdx = Math.cos(pa) * 5;
       pdy = Math.sin(pa) * 5;
     }
-    if(inputKey[4]){
-      let xo = 0; 
-      if(pdx<0){
-        xo=-25;
-      }else{
-        xo=25;
-      }
-      let yo = 0; 
-      if(pdy<0){
-        yo=-25;
-      }else{
-        yo=25;
-      }
-      let ipx = Math.floor(px/64.00); // current grid position
-      let ipx_add_xo = Math.floor((px+xo)/64.00);
-      let ipy = Math.floor(py/64.00);
-      let ipy_add_yo = Math.floor((py+yo)/64.00);
+    if(inputKey[4]){ //E
       if(mapW[(ipy_add_yo* mapX + ipx_add_xo)]===4){
         mapW[(ipy_add_yo* mapX + ipx_add_xo)]=0;
       }
