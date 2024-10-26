@@ -18,12 +18,23 @@ a:visited{
 }
 .site{
 }
-.navbar ul{
+/*.navbar ul{
     list-style-type: none;
     background-color: rgb(29, 26, 33);
     padding: 0px;
     margin : 0px;
     overflow : hidden;
+} */
+
+.navbar ul{
+    list-style-type: none;
+    background-color: rgb(7, 1, 10);
+    padding : 0px;
+    margin:0px;
+    overflow: hidden;
+    display:flex;
+    justify-content: space-around;
+    
 }
 .navbar a{
     color: white;
@@ -32,12 +43,29 @@ a:visited{
     display: block;
     text-align:center;
 }
-.navbar a:hover{
-    background-color:black;
+
+.navContainer{
+    margin-left : -8px;
+    padding:0;
+    position:fixed;
+    top:0;
+    width : 100%;
 }
+
+.navbar .blockElement:hover{
+    background-color: rgb(16, 2, 22);
+}
+
 .navbar li{
     float : left;
 }
+
+.blockElement {
+    display:block;
+    margin-bottom :  1vh;
+    
+}
+
 
 .jscanvas{
     display: flex;
@@ -49,4 +77,43 @@ canvas {
     align-items: center;
     justify-items: center;
 }
-  
+
+.contacts{
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 50px; 
+    padding: 20px;
+}
+
+
+.project-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 20px; 
+    padding: 20px;
+}
+
+.clickable-block {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 10px;
+    
+    text-align: center; 
+}
+
+.clickable-block:hover .content {
+    background-color: #00000040; 
+}
+
+.flood-project .content img {
+    width: 300px; 
+    height: auto;
+}
+
+.raycaster-project .content img {
+    width: 400px; 
+    height: auto;
+}
