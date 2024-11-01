@@ -1,5 +1,5 @@
 body{
-    background-color:rgb(50, 43, 68);
+    background-color:rgb(50, 50, 50);
     
     text-align: center;
 }
@@ -16,16 +16,6 @@ a:link {
 a:visited{
     color: gray;
 }
-.site{
-}
-/*.navbar ul{
-    list-style-type: none;
-    background-color: rgb(29, 26, 33);
-    padding: 0px;
-    margin : 0px;
-    overflow : hidden;
-} */
-
 .navbar ul{
     list-style-type: none;
     background-color: rgb(7, 1, 10);
