@@ -3,7 +3,7 @@ body{
     
     text-align: center;
 }
-h1,h3,p{
+h1,h2,h3,p{
     color : white;
     
 }
@@ -18,7 +18,7 @@ a:visited{
 }
 .navbar ul{
     list-style-type: none;
-    background-color: rgb(7, 1, 10);
+    background-color: rgb(7, 1, 7);
     padding : 0px;
     margin:0px;
     overflow: hidden;
